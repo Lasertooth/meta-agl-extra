@@ -59,8 +59,9 @@ do_install() {
 
   if [ -n "$SOTA_AUTOPROVISION_CREDENTIALS" ]; then
     install -d ${D}/var
-    install -m 0655 $SOTA_AUTOPROVISION_CREDENTIALS ${D}/var/sota_provisioning_credentials.p12
-    echo "SOTA_GATEWAY_URI=$SOTA_AUTOPROVISION_URL" > ${D}/var/sota_provisioning_url.env
+    install -d ${D}/var/sota
+    install -m 0655 $SOTA_AUTOPROVISION_CREDENTIALS ${D}/var/sota/sota_provisioning_credentials.p12
+    echo "SOTA_GATEWAY_URI=$SOTA_AUTOPROVISION_URL" > ${D}/var/sota/sota_provisioning_url.env
     install -c ${S}/run/sota_client_autoprovision.service ${D}${systemd_unitdir}/system/sota_client_autoprovision.service
   fi
 
