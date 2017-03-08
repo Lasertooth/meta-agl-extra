@@ -20,7 +20,7 @@ FILES_${PN} = " \
                 /var/sota/sota_provisioning_credentials.p12 \
                 /var/sota/sota_provisioning_url.env \
                 ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client_autoprovision.service', '', d)} \
-                ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client.service', '', d)} \
+                ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client_auto.service', '', d)} \
               "
 SYSTEMD_SERVICE_${PN} = "sota_client.service"
 
@@ -50,7 +50,7 @@ do_install() {
 
   if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
     install -d ${D}/${systemd_unitdir}/system
-    install -c ${S}/run/sota_client_ostree.service ${D}${systemd_unitdir}/system/sota_client.service
+    install -c ${S}/run/sota_client_ostree_auto.service ${D}${systemd_unitdir}/system/sota_client.service
   fi
 
   install -d ${D}${sysconfdir}
