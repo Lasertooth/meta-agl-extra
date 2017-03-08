@@ -13,9 +13,13 @@ FILES_${PN} = " \
                 ${bindir}/sota_client \
                 ${bindir}/sota_sysinfo.sh \
                 ${bindir}/system_info.sh \
-		${bindir}/sota_ostree.sh \
+                ${bindir}/sota_ostree.sh \
+                ${bindir}/sota_prov.sh \
                 ${sysconfdir}/sota_client.version \
                 ${sysconfdir}/sota_certificates \
+                /var/sota_provisioning_credentials.p12 \
+                /var/sota_provisioning_url.env \
+                ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client_autoprovision.service', '', d)} \
                 ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client.service', '', d)} \
               "
 SYSTEMD_SERVICE_${PN} = "sota_client.service"
@@ -28,9 +32,14 @@ RDEPENDS_${PN} = " libcrypto \
                    bash \
                    lshw \
                    jq \
+                   curl \
                    python \
                    python-canonicaljson \
                    "
+
+export SOTA_AUTOPROVISION_CREDENTIALS
+export SOTA_AUTOPROVISION_URL
+
 do_install() {
   install -d ${D}${bindir}
   install -m 0755 ${S}/run/sota_client ${D}${bindir}
@@ -47,4 +56,12 @@ do_install() {
   echo `git log -1 --pretty=format:%H` > ${D}${sysconfdir}/sota_client.version
   install -c ${S}/run/sota_certificates ${D}${sysconfdir}
   ln -fs /lib ${D}/lib64
+
+  if [ -n "$SOTA_AUTOPROVISION_CREDENTIALS" ]; then
+    install -d ${D}/var
+    install -m 0655 $SOTA_AUTOPROVISION_CREDENTIALS ${D}/var/sota_provisioning_credentials.p12
+    echo "SOTA_GATEWAY_URI=$SOTA_AUTOPROVISION_URL" > ${D}/var/sota_provisioning_url.env
+    install -c ${S}/run/sota_client_autoprovision.service ${D}${systemd_unitdir}/system/sota_client_autoprovision.service
+  fi
+
 }
