@@ -28,6 +28,8 @@ RDEPENDS_${PN} = " libcrypto \
                    bash \
                    lshw \
                    jq \
+                   python \
+                   python-canonicaljson \
                    "
 do_install() {
   install -d ${D}${bindir}
