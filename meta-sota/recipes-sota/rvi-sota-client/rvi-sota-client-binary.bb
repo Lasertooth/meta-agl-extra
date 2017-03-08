@@ -46,6 +46,7 @@ do_install() {
   install -m 0755 ${S}/run/sota_sysinfo.sh ${D}${bindir}
   ln -fs ${bindir}/sota_sysinfo.sh ${D}${bindir}/system_info.sh  # For compatibilty with old sota.toml files
   install -m 0755 ${S}/run/sota_ostree.sh ${D}${bindir}
+  install -m 0755 ${S}/run/sota_prov.sh ${D}${bindir}
 
   if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
     install -d ${D}/${systemd_unitdir}/system
