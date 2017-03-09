@@ -8,11 +8,11 @@ inherit systemd cargo
 
 S = "${WORKDIR}/git"
 
-SRCREV = "8d4f2478b761e14bc6cae2154b77c1c397be0be0"
+SRCREV = "f4bebfc0e3d7f3c548ee29df62e800d75e87433c"
 
 # Generate with:
 #   git describe --tags | cut -b2-
-PV = "0.2.32-60-g8d4f247"
+PV = "0.2.32-70-gf4bebfc"
 
 BBCLASSEXTEND = "native"
 
