@@ -8,11 +8,12 @@ inherit systemd cargo
 
 S = "${WORKDIR}/git"
 
-SRCREV = "f4bebfc0e3d7f3c548ee29df62e800d75e87433c"
+# When changing this, don't forget to update PV too
+SRCREV = "6a78e3c4e30c38ab44a341a522d3d3a992caadc5"
 
 # Generate with:
 #   git describe --tags | cut -b2-
-PV = "0.2.32-70-gf4bebfc"
+PV = "0.2.32-76-g6a78e3c"
 
 BBCLASSEXTEND = "native"
 
@@ -136,6 +137,7 @@ RDEPENDS_${PN} = " libcrypto \
                    curl \
                    python \
                    python-canonicaljson \
+                   python-json \
                    "
 
 export SOTA_AUTOPROVISION_CREDENTIALS
@@ -152,6 +154,7 @@ do_install() {
   ln -fs ${bindir}/sota_sysinfo.sh ${D}${bindir}/system_info.sh  # For compatibilty with old sota.toml files
   install -m 0755 ${S}/run/sota_ostree.sh ${D}${bindir}
   install -m 0755 ${S}/run/sota_prov.sh ${D}${bindir}
+  install -m 0755 ${S}/run/canonical_json.py ${D}${bindir}
 
   if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
     install -d ${D}/${systemd_unitdir}/system
