@@ -6,5 +6,5 @@ LICENSE = "CLOSED"
 
 IMAGE_INSTALL_append = "\
     packagegroup-agl-image-minimal \
-    rvi-sota-client-binary \
+    rvi-sota-client \
     "
