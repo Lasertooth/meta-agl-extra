@@ -19,6 +19,7 @@ BBCLASSEXTEND = "native"
 
 FILES_${PN} = " \
                 /lib64 \
+                ${bindir}/canonical_json.py \
                 ${bindir}/sota_client \
                 ${bindir}/sota_sysinfo.sh \
                 ${bindir}/system_info.sh \
