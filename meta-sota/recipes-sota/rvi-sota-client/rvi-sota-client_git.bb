@@ -77,6 +77,7 @@ crate://crates.io/num-traits/0.1.36 \
 crate://crates.io/num_cpus/1.2.1 \
 crate://crates.io/openssl-sys/0.9.7 \
 crate://crates.io/openssl/0.9.7 \
+crate://crates.io/pem/0.2.0 \
 crate://crates.io/pkg-config/0.3.9 \
 crate://crates.io/quote/0.3.13 \
 crate://crates.io/rand/0.3.15 \
@@ -100,7 +101,6 @@ crate://crates.io/serde_derive/0.9.9 \
 crate://crates.io/serde_json/0.9.8 \
 crate://crates.io/syn/0.11.7 \
 crate://crates.io/synom/0.11.0 \
-crate://crates.io/tempfile/2.1.5 \
 crate://crates.io/time/0.1.36 \
 crate://crates.io/toml/0.2.1 \
 crate://crates.io/traitobject/0.0.1 \
@@ -156,6 +156,7 @@ do_install() {
       install -c ${S}/run/sota_client_ostree_auto.service ${D}${systemd_unitdir}/system/sota_client.service
     else
       install -c ${S}/run/sota_client_ostree.service ${D}${systemd_unitdir}/system/sota_client.service
+    fi
   fi
 
   install -d ${D}${sysconfdir}
