@@ -124,7 +124,7 @@ git://github.com/advancedtelematic/rvi_sota_client \
 SRC_URI[index.md5sum] = "79f10f436dbf26737cc80445746f16b4"
 SRC_URI[index.sha256sum] = "86114b93f1f51aaf0aec3af0751d214b351f4ff9839ba031315c1b19dcbb1913"
 
-SYSTEMD_SERVICE_${PN} = "sota_client.service"
+SYSTEMD_SERVICE_${PN} = "sota_client.service sota_client_autoprovision.service"
 
 DEPENDS += " openssl dbus "
 RDEPENDS_${PN} = " libcrypto \
@@ -137,6 +137,9 @@ RDEPENDS_${PN} = " libcrypto \
                    python \
                    python-canonicaljson \
                    "
+
+export SOTA_AUTOPROVISION_CREDENTIALS
+export SOTA_AUTOPROVISION_URL
 
 do_compile_prepend() {
   export SOTA_VERSION=$(make sota-version)
@@ -157,6 +160,7 @@ do_install() {
     else
       install -c ${S}/run/sota_client_ostree.service ${D}${systemd_unitdir}/system/sota_client.service
     fi
+    install -c ${S}/run/sota_client_autoprovision.service ${D}${systemd_unitdir}/system/sota_client_autoprovision.service
   fi
 
   install -d ${D}${sysconfdir}
@@ -169,7 +173,6 @@ do_install() {
     install -d ${D}/var/sota
     install -m 0655 $SOTA_AUTOPROVISION_CREDENTIALS ${D}/var/sota/sota_provisioning_credentials.p12
     echo "SOTA_GATEWAY_URI=$SOTA_AUTOPROVISION_URL" > ${D}/var/sota/sota_provisioning_url.env
-    install -c ${S}/run/sota_client_autoprovision.service ${D}${systemd_unitdir}/system/sota_client_autoprovision.service
   fi
 
 }
