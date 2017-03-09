@@ -13,3 +13,5 @@ OSTREE_BRANCHNAME ?= "agl-ota-${MACHINE}"
 OSTREE_OSNAME ?= "agl"
 OSTREE_INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 
+# See https://advancedtelematic.atlassian.net/browse/PRO-2693
+PREFERRED_VERSION_linux-yocto_qemux86-64="4.4%"
