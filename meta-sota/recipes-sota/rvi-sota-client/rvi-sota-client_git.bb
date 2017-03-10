@@ -9,13 +9,13 @@ inherit systemd cargo
 S = "${WORKDIR}/git"
 
 # When changing this, don't forget to update PV too
-SRCREV = "356ea5d4b27961177532e47361ec897a9c54ebc7"
+SRCREV = "2e9294a35e92d0da42bbf18c022ce8be2a2d6fce"
 
 # Generate with:
 #   git describe --tags | cut -b2-
 # or from the rvi_sota_client repo:
 #   make package-version
-PV = "0.2.32-82-g356ea5d"
+PV = "0.2.32-84-g2e9294a"
 
 BBCLASSEXTEND = "native"
 
