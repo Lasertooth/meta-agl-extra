@@ -17,10 +17,10 @@ FILES_${PN} = " \
                 ${bindir}/sota_prov.sh \
                 ${sysconfdir}/sota_client.version \
                 ${sysconfdir}/sota_certificates \
-                /var/sota/sota_provisioning_credentials.p12 \
-                /var/sota/sota_provisioning_url.env \
-                ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client_autoprovision.service', '', d)} \
-                ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client_auto.service', '', d)} \
+                /var/sota/credentials.p12 \
+                /var/sota/provisioning.env \
+                ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client_provision.service', '', d)} \
+                ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client.service', '', d)} \
               "
 SYSTEMD_SERVICE_${PN} = "sota_client.service"
 
@@ -50,7 +50,7 @@ do_install() {
 
   if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
     install -d ${D}/${systemd_unitdir}/system
-    install -c ${S}/run/sota_client_ostree_auto.service ${D}${systemd_unitdir}/system/sota_client.service
+    install -c ${S}/run/sota_client_theatre.service ${D}${systemd_unitdir}/system/sota_client.service
   fi
 
   install -d ${D}${sysconfdir}
@@ -61,9 +61,9 @@ do_install() {
   if [ -n "$SOTA_AUTOPROVISION_CREDENTIALS" ]; then
     install -d ${D}/var
     install -d ${D}/var/sota
-    install -m 0655 $SOTA_AUTOPROVISION_CREDENTIALS ${D}/var/sota/sota_provisioning_credentials.p12
-    echo "SOTA_GATEWAY_URI=$SOTA_AUTOPROVISION_URL" > ${D}/var/sota/sota_provisioning_url.env
-    install -c ${S}/run/sota_client_autoprovision.service ${D}${systemd_unitdir}/system/sota_client_autoprovision.service
+    install -m 0655 $SOTA_AUTOPROVISION_CREDENTIALS ${D}/var/sota/credentials.p12
+    echo "SOTA_GATEWAY_URI=$SOTA_AUTOPROVISION_URL" > ${D}/var/sota/provisioning.env
+    install -c ${S}/run/sota_client_theatre_provision.service ${D}${systemd_unitdir}/system/sota_client_provision.service
   fi
 
 }

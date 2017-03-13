@@ -9,13 +9,13 @@ inherit systemd cargo
 S = "${WORKDIR}/git"
 
 # When changing this, don't forget to update PV too
-SRCREV = "2e9294a35e92d0da42bbf18c022ce8be2a2d6fce"
+SRCREV = "0bc3ebf740415f99e1ea79f888e0e98a4d11df3b"
 
 # Generate with:
 #   git describe --tags | cut -b2-
 # or from the rvi_sota_client repo:
 #   make package-version
-PV = "0.2.32-84-g2e9294a"
+PV = "0.2.32-87-g0bc3ebf"
 
 BBCLASSEXTEND = "native"
 
@@ -29,9 +29,9 @@ FILES_${PN} = " \
                 ${bindir}/sota_prov.sh \
                 ${sysconfdir}/sota_client.version \
                 ${sysconfdir}/sota_certificates \
-                /var/sota/sota_provisioning_credentials.p12 \
-                /var/sota/sota_provisioning_url.env \
-                ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client_autoprovision.service', '', d)} \
+                /var/sota/credentials.p12 \
+                /var/sota/provisioning.env \
+                ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client_provision.service', '', d)} \
                 ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/sota_client.service', '', d)} \
               "
 
@@ -128,7 +128,7 @@ git://github.com/advancedtelematic/rvi_sota_client \
 SRC_URI[index.md5sum] = "79f10f436dbf26737cc80445746f16b4"
 SRC_URI[index.sha256sum] = "86114b93f1f51aaf0aec3af0751d214b351f4ff9839ba031315c1b19dcbb1913"
 
-SYSTEMD_SERVICE_${PN} = "sota_client.service sota_client_autoprovision.service"
+SYSTEMD_SERVICE_${PN} = "sota_client.service sota_client_provision.service"
 
 DEPENDS += " openssl dbus "
 RDEPENDS_${PN} = " libcrypto \
@@ -162,11 +162,11 @@ do_install() {
   if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
     install -d ${D}/${systemd_unitdir}/system
     if [ -n "$SOTA_AUTOPROVISION_CREDENTIALS" ]; then
-      install -c ${S}/run/sota_client_ostree_auto.service ${D}${systemd_unitdir}/system/sota_client.service
+      install -c ${S}/run/sota_client_theatre.service ${D}${systemd_unitdir}/system/sota_client.service
     else
       install -c ${S}/run/sota_client_ostree.service ${D}${systemd_unitdir}/system/sota_client.service
     fi
-    install -c ${S}/run/sota_client_autoprovision.service ${D}${systemd_unitdir}/system/sota_client_autoprovision.service
+    install -c ${S}/run/sota_client_theatre_provision.service ${D}${systemd_unitdir}/system/sota_client_provision.service
   fi
 
   install -d ${D}${sysconfdir}
@@ -177,8 +177,7 @@ do_install() {
   if [ -n "$SOTA_AUTOPROVISION_CREDENTIALS" ]; then
     install -d ${D}/var
     install -d ${D}/var/sota
-    install -m 0655 $SOTA_AUTOPROVISION_CREDENTIALS ${D}/var/sota/sota_provisioning_credentials.p12
-    echo "SOTA_GATEWAY_URI=$SOTA_AUTOPROVISION_URL" > ${D}/var/sota/sota_provisioning_url.env
+    install -m 0655 $SOTA_AUTOPROVISION_CREDENTIALS ${D}/var/sota/credentials.p12
+    echo "SOTA_GATEWAY_URI=$SOTA_AUTOPROVISION_URL" > ${D}/var/sota/provisioning.env
   fi
-
 }
