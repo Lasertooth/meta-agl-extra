@@ -8,14 +8,16 @@ inherit systemd cargo
 
 S = "${WORKDIR}/git"
 
-# When changing this, don't forget to update PV too
-SRCREV = "2e9294a35e92d0da42bbf18c022ce8be2a2d6fce"
+# When changing this, don't forget to:
+# 1) Update PV
+# 2) Check that Cargo.lock hasn't changed with git diff old..new Cargo.lock
+SRCREV = "1dfe4164727cda6c1879da01ec59b190ffd16e30"
 
 # Generate with:
 #   git describe --tags | cut -b2-
 # or from the rvi_sota_client repo:
 #   make package-version
-PV = "0.2.32-84-g2e9294a"
+PV = "0.2.32-94-g1dfe416"
 
 BBCLASSEXTEND = "native"
 
@@ -162,7 +164,7 @@ do_install() {
   if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
     install -d ${D}/${systemd_unitdir}/system
     if [ -n "$SOTA_AUTOPROVISION_CREDENTIALS" ]; then
-      install -c ${S}/run/sota_client_ostree_auto.service ${D}${systemd_unitdir}/system/sota_client.service
+      install -c ${S}/run/sota_client_uptane_auto.service ${D}${systemd_unitdir}/system/sota_client.service
     else
       install -c ${S}/run/sota_client_ostree.service ${D}${systemd_unitdir}/system/sota_client.service
     fi

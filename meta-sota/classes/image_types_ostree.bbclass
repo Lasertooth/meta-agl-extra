@@ -130,6 +130,7 @@ IMAGE_CMD_ostreepush () {
 	if [ ${OSTREE_PUSH_CREDENTIALS} ]; then
 		garage-push --repo=${OSTREE_REPO} \
 			    --ref=${OSTREE_BRANCHNAME} \
-			    --credentials=${OSTREE_PUSH_CREDENTIALS}
+			    --credentials=${OSTREE_PUSH_CREDENTIALS} \
+			    --cacert=${STAGING_ETCDIR_NATIVE}/ssl/certs/ca-certificates.crt
 	fi
 }
