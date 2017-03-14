@@ -5,8 +5,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=65d26fcc2f35ea6a181ac777e42db1ea"
 
 S = "${WORKDIR}/git"
 
-SRC_URI = "gitsm://github.com/advancedtelematic/sota-tools.git;branch=master"
-SRCREV = "c6ecec3e86c423dd6caaa362a5ff0a1a6f4072a8"
+SRC_URI = "gitsm://github.com/advancedtelematic/sota-tools.git;branch=feat/cacert"
+SRCREV = "cee98ae8232662d3da73eb2546b65bab2d4bde90"
 
 inherit cmake
 
