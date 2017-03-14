@@ -23,7 +23,7 @@ calculate_size () {
 	EXTRA=$5
 	ALIGN=$6
 
-	SIZE=`echo "$BASE * $SCALE" | bc -l`
+	SIZE=`echo "$BASE * $SCALE * 3" | bc -l`
 	REM=`echo $SIZE | cut -d "." -f 2`
 	SIZE=`echo $SIZE | cut -d "." -f 1`
 
