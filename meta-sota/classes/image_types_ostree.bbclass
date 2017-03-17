@@ -58,6 +58,11 @@ IMAGE_CMD_ostree () {
 
 	echo "d /var/rootdirs 0755 root root -" >>${tmpfiles_conf}
 	echo "L /var/rootdirs/home - - - - /sysroot/home" >>${tmpfiles_conf}
+
+	# Preserve OSTREE_BRANCHNAME for future information
+	# See PRO-2755
+	mkdir -p usr/share/sota/
+	echo "${OSTREE_BRANCHNAME}" > usr/share/sota/branchname
 	# Preserve data in /home to be later copied to /sysroot/home by
 	#   sysroot generating procedure
 	mkdir -p usr/homedirs
