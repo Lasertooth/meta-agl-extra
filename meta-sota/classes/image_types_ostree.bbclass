@@ -106,7 +106,7 @@ IMAGE_CMD_ostree () {
 	cp ${DEPLOY_DIR_IMAGE}/${OSTREE_INITRAMFS_IMAGE}-${MACHINE}${RAMDISK_EXT} boot/initramfs-${checksum}
 
 	# Copy image manifest
-        cat ${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.manifest | cut -d " " -f1,3 > usr/package.manifest
+        cat ${IMAGE_MANIFEST} | cut -d " " -f1,3 > usr/package.manifest
 
 	cd ${WORKDIR}
 
