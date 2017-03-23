@@ -11,10 +11,6 @@ inherit image
 
 IMAGE_DEPENDS_otaimg = "e2fsprogs-native:do_populate_sysroot"
 
-# For qemux86 u-boot is not included in any live image and is built separately
-IMAGE_DEPENDS_otaimg_append_qemux86 = " virtual/bootloader:do_deploy"
-IMAGE_DEPENDS_otaimg_append_qemux86-64 = " virtual/bootloader:do_deploy"
-
 calculate_size () {
 	BASE=$1
 	SCALE=$2
@@ -75,11 +71,22 @@ IMAGE_CMD_otaimg () {
 		mkdir -p ${PHYS_SYSROOT}/boot/loader.0
 		ln -s loader.0 ${PHYS_SYSROOT}/boot/loader
 
-		touch ${PHYS_SYSROOT}/boot/loader/uEnv.txt
+		if [ ${OSTREE_BOOTLOADER} == "grub" ]; then
+			mkdir -p ${PHYS_SYSROOT}/boot/grub2
+			touch ${PHYS_SYSROOT}/boot/grub2/grub.cfg
+		elif [ ${OSTREE_BOOTLOADER} == "u-boot" ]; then
+			touch ${PHYS_SYSROOT}/boot/loader/uEnv.txt
+		fi;
 
 		ostree --repo=${PHYS_SYSROOT}/ostree/repo pull-local --remote=${OSTREE_OSNAME} ${OSTREE_REPO} ${OSTREE_BRANCHNAME}
-		ostree admin --sysroot=${PHYS_SYSROOT} deploy --os=${OSTREE_OSNAME} ${OSTREE_OSNAME}:${OSTREE_BRANCHNAME}
-		
+		export OSTREE_BOOT_PARTITION="/boot"
+		kargs_list=""
+		for arg in ${OSTREE_KERNEL_ARGS}; do
+			kargs_list+="--karg-append=$arg "
+		done
+
+		ostree admin --sysroot=${PHYS_SYSROOT} deploy ${kargs_list} --os=${OSTREE_OSNAME} ${OSTREE_OSNAME}:${OSTREE_BRANCHNAME}
+
 		# Copy deployment /home and /var/sota to sysroot
 		HOME_TMP=`mktemp -d ${WORKDIR}/home-tmp-XXXXX`
 		tar --xattrs --xattrs-include='*' -C ${HOME_TMP} -xf ${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.rootfs.ostree.tar.bz2 ./usr/homedirs ./var/sota || true
@@ -101,7 +108,8 @@ IMAGE_CMD_otaimg () {
 		rm -rf ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.otaimg
 		sync
 		dd if=/dev/zero of=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.otaimg seek=$OTA_ROOTFS_SIZE count=$COUNT bs=1024
-		mkfs.ext4 ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.otaimg -d ${PHYS_SYSROOT}
+		mkfs.ext4 -O ^64bit ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.otaimg -d ${PHYS_SYSROOT}
+
 		rm -rf ${PHYS_SYSROOT}
 
 		rm -f ${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.otaimg
