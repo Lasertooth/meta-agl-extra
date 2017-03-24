@@ -133,7 +133,7 @@ SRC_URI[index.sha256sum] = "86114b93f1f51aaf0aec3af0751d214b351f4ff9839ba031315c
 
 SYSTEMD_SERVICE_${PN} = "sota_client.service sota_client_autoprovision.service"
 
-DEPENDS += " openssl dbus "
+DEPENDS += " openssl openssl-native dbus "
 RDEPENDS_${PN} = " libcrypto \
                    libssl \
                    dbus \
@@ -178,6 +178,12 @@ do_install() {
   ln -fs /lib ${D}/lib64
 
   if [ -n "$SOTA_AUTOPROVISION_CREDENTIALS" ]; then
+    EXPDATE=`openssl pkcs12 -in $SOTA_AUTOPROVISION_CREDENTIALS -password "pass:" -nodes 2>/dev/null | openssl x509 -noout -enddate | cut -f2 -d "="`
+
+    if [ `date +%s` -ge `date -d "${EXPDATE}" +%s` ]; then
+      bberror "Certificate ${SOTA_AUTOPROVISION_CREDENTIALS} has expired on ${EXPDATE}"
+    fi
+
     install -d ${D}/var
     install -d ${D}/var/sota
     install -m 0655 $SOTA_AUTOPROVISION_CREDENTIALS ${D}/var/sota/sota_provisioning_credentials.p12
