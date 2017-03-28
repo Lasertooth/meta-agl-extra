@@ -9,7 +9,9 @@
 
 inherit image
 
-IMAGE_DEPENDS_otaimg = "e2fsprogs-native:do_populate_sysroot"
+IMAGE_DEPENDS_otaimg = "e2fsprogs-native:do_populate_sysroot \
+			${@'grub:do_populate_sysroot' if d.getVar('OSTREE_BOOTLOADER', True) == 'grub' else ''} \
+			${@'virtual/bootloader:do_deploy' if d.getVar('OSTREE_BOOTLOADER', True) == 'u-boot' else ''}"
 
 calculate_size () {
 	BASE=$1
@@ -47,6 +49,7 @@ calculate_size () {
 export OSTREE_OSNAME
 export OSTREE_BRANCHNAME
 export OSTREE_REPO
+export OSTREE_BOOTLOADER
 
 IMAGE_CMD_otaimg () {
 	if ${@bb.utils.contains('IMAGE_FSTYPES', 'otaimg', 'true', 'false', d)}; then
@@ -71,11 +74,13 @@ IMAGE_CMD_otaimg () {
 		mkdir -p ${PHYS_SYSROOT}/boot/loader.0
 		ln -s loader.0 ${PHYS_SYSROOT}/boot/loader
 
-		if [ ${OSTREE_BOOTLOADER} == "grub" ]; then
+		if [ "${OSTREE_BOOTLOADER}" = "grub" ]; then
 			mkdir -p ${PHYS_SYSROOT}/boot/grub2
 			touch ${PHYS_SYSROOT}/boot/grub2/grub.cfg
-		elif [ ${OSTREE_BOOTLOADER} == "u-boot" ]; then
+		elif [ "${OSTREE_BOOTLOADER}" = "u-boot" ]; then
 			touch ${PHYS_SYSROOT}/boot/loader/uEnv.txt
+		else
+			bberror "Invalid bootloader: ${OSTREE_BOOTLOADER}"
 		fi;
 
 		ostree --repo=${PHYS_SYSROOT}/ostree/repo pull-local --remote=${OSTREE_OSNAME} ${OSTREE_REPO} ${OSTREE_BRANCHNAME}

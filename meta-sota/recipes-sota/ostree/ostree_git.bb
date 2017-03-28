@@ -8,7 +8,10 @@ INHERIT_remove_class-native = "systemd"
 
 SRC_URI = "gitsm://github.com/ostreedev/ostree.git;branch=master"
 
-SRCREV="0817be61a17cc8b770cad54196182ac9c3109caf"
+SRCREV="3b09620c2738bce4ed45e099cf2e4c5df7671d39"
+
+# Workaround https://advancedtelematic.atlassian.net/browse/PRO-2840
+PR = "2"
 
 S = "${WORKDIR}/git"
 
