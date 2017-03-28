@@ -87,7 +87,7 @@ IMAGE_CMD_otaimg () {
 		export OSTREE_BOOT_PARTITION="/boot"
 		kargs_list=""
 		for arg in ${OSTREE_KERNEL_ARGS}; do
-			kargs_list+="--karg-append=$arg "
+			kargs_list="${kargs_list} --karg-append=$arg"
 		done
 
 		ostree admin --sysroot=${PHYS_SYSROOT} deploy ${kargs_list} --os=${OSTREE_OSNAME} ${OSTREE_OSNAME}:${OSTREE_BRANCHNAME}
