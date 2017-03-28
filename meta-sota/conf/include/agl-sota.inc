@@ -15,6 +15,3 @@ OSTREE_INITRAMFS_IMAGE ?= "initramfs-ostree-image"
 
 # See https://advancedtelematic.atlassian.net/browse/PRO-2693
 PREFERRED_VERSION_linux-yocto_qemux86-64="4.4%"
-
-# Should be moved to BSB layer in future
-OSTREE_KERNEL_ARGS_qemux86-64 = "ramdisk_size=16384 rw rootfstype=ext4 rootwait rootdelay=2 ostree_root=/dev/hda1"
