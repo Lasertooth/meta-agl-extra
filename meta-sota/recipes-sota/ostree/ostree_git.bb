@@ -20,11 +20,17 @@ BBCLASSEXTEND = "native"
 DEPENDS += "attr libarchive glib-2.0 pkgconfig gpgme libgsystem fuse libsoup-2.4 e2fsprogs systemd gtk-doc-native"
 DEPENDS_remove_class-native = "systemd-native"
 
-RDEPENDS_${PN} = "python util-linux-libuuid util-linux-libblkid util-linux-libmount libcap xz"
+RDEPENDS_${PN} = "python util-linux-libuuid util-linux-libblkid util-linux-libmount libcap xz bash"
 RDEPENDS_${PN}_remove_class-native = "python-native"
 
 EXTRA_OECONF = "--with-libarchive --disable-gtk-doc --disable-gtk-doc-html --disable-gtk-doc-pdf --disable-man --with-smack --with-builtin-grub2-mkconfig"
 EXTRA_OECONF_append_class-native = " --enable-wrpseudo-compat"
+
+# Path to ${prefix}/lib/ostree/ostree-grub-generator is hardcoded on the
+#  do_configure stage so we do depend on it
+SYSROOT_DIR = "${STAGING_DIR_TARGET}"
+SYSROOT_DIR_class-native = "${STAGING_DIR_NATIVE}"
+do_configure[vardeps] += "SYSROOT_DIR"
 
 SYSTEMD_REQUIRED = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}"
 SYSTEMD_REQUIRED_class-native = ""
