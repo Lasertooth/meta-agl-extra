@@ -11,13 +11,13 @@ S = "${WORKDIR}/git"
 # When changing this, don't forget to:
 # 1) Update PV
 # 2) Check that Cargo.lock hasn't changed with git diff old..new Cargo.lock
-SRCREV = "049f21980ee020e7373d00370c3b6759472e135a"
+SRCREV = "0d918223fca6d44c8d23a8cacc369dafe117327c"
 
 # Generate with:
 #   git describe --tags | cut -b2-
 # or from the rvi_sota_client repo:
 #   make package-version
-PV = "0.2.32-140-g049f219"
+PV = "0.2.32-143-g0d91822"
 
 BBCLASSEXTEND = "native"
 
@@ -45,7 +45,7 @@ crate://crates.io/bit-set/0.4.0 \
 crate://crates.io/bit-vec/0.4.3 \
 crate://crates.io/bitflags/0.7.0 \
 crate://crates.io/byteorder/1.0.0 \
-crate://crates.io/bytes/0.4.1 \
+crate://crates.io/bytes/0.4.2 \
 crate://crates.io/cfg-if/0.1.0 \
 crate://crates.io/chan/0.1.19 \
 crate://crates.io/chan-signal/0.2.0 \
@@ -60,13 +60,13 @@ crate://crates.io/gcc/0.3.45 \
 crate://crates.io/gdi32-sys/0.2.0 \
 crate://crates.io/getopts/0.2.14 \
 crate://crates.io/httparse/1.2.1 \
-crate://crates.io/hyper/0.10.5 \
-crate://crates.io/idna/0.1.0 \
+crate://crates.io/hyper/0.10.6 \
+crate://crates.io/idna/0.1.1 \
 crate://crates.io/iovec/0.1.0 \
 crate://crates.io/itoa/0.3.1 \
 crate://crates.io/kernel32-sys/0.2.2 \
 crate://crates.io/language-tags/0.2.2 \
-crate://crates.io/lazy_static/0.2.5 \
+crate://crates.io/lazy_static/0.2.6 \
 crate://crates.io/libc/0.2.21 \
 crate://crates.io/log/0.3.7 \
 crate://crates.io/matches/0.1.4 \
@@ -96,12 +96,12 @@ crate://crates.io/rust-crypto/0.2.36 \
 crate://crates.io/rustc-serialize/0.3.23 \
 crate://crates.io/rustc_version/0.1.7 \
 crate://crates.io/semver/0.1.20 \
-crate://crates.io/serde/0.9.12 \
+crate://crates.io/serde/0.9.13 \
 crate://crates.io/serde_codegen_internals/0.14.2 \
-crate://crates.io/serde_derive/0.9.12 \
+crate://crates.io/serde_derive/0.9.13 \
 crate://crates.io/serde_json/0.9.9 \
 crate://crates.io/sha1/0.2.0 \
-crate://crates.io/syn/0.11.9 \
+crate://crates.io/syn/0.11.10 \
 crate://crates.io/synom/0.11.3 \
 crate://crates.io/thread-id/2.0.0 \
 crate://crates.io/thread-id/3.0.0 \
@@ -109,7 +109,7 @@ crate://crates.io/thread_local/0.2.7 \
 crate://crates.io/thread_local/0.3.3 \
 crate://crates.io/time/0.1.36 \
 crate://crates.io/toml/0.2.1 \
-crate://crates.io/toml/0.3.1 \
+crate://crates.io/toml/0.3.2 \
 crate://crates.io/traitobject/0.1.0 \
 crate://crates.io/tungstenite/0.1.1 \
 crate://crates.io/typeable/0.1.2 \
