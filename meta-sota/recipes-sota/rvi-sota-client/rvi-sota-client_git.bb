@@ -11,13 +11,13 @@ S = "${WORKDIR}/git"
 # When changing this, don't forget to:
 # 1) Update PV
 # 2) Check that Cargo.lock hasn't changed with git diff old..new Cargo.lock
-SRCREV = "0d918223fca6d44c8d23a8cacc369dafe117327c"
+SRCREV = "d1a5d0f0024099d5feea403a9ec899a88ed36eff"
 
 # Generate with:
 #   git describe --tags | cut -b2-
 # or from the rvi_sota_client repo:
 #   make package-version
-PV = "0.2.32-143-g0d91822"
+PV = "0.2.32-145-gd1a5d0f"
 
 BBCLASSEXTEND = "native"
 
