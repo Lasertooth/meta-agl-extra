@@ -11,13 +11,13 @@ S = "${WORKDIR}/git"
 # When changing this, don't forget to:
 # 1) Update PV
 # 2) Check that Cargo.lock hasn't changed with git diff old..new Cargo.lock
-SRCREV = "96e2d079a54b383d6a020acbf463b596cba4ab54"
+SRCREV = "395835b60323f766375cf9e67baa93a0265b68b3"
 
 # Generate with:
 #   git describe --tags | cut -b2-
 # or from the rvi_sota_client repo:
 #   make package-version
-PV = "0.2.32-175-g96e2d07"
+PV = "0.2.32-176-g395835b"
 
 BBCLASSEXTEND = "native"
 
@@ -78,7 +78,6 @@ crate://crates.io/matches/0.1.4 \
 crate://crates.io/memchr/1.0.1 \
 crate://crates.io/metadeps/1.1.1 \
 crate://crates.io/mime/0.2.3 \
-crate://crates.io/nom/1.2.4 \
 crate://crates.io/num/0.1.37 \
 crate://crates.io/num-integer/0.1.34 \
 crate://crates.io/num-iter/0.1.33 \
@@ -131,7 +130,7 @@ crate://crates.io/void/1.0.2 \
 crate://crates.io/winapi/0.2.8 \
 crate://crates.io/winapi-build/0.1.1 \
 crate://crates.io/xattr/0.1.11 \
-git://github.com/advancedtelematic/rvi_sota_client \
+git://github.com/advancedtelematic/rvi_sota_client;branch=refactor/remove-nom \
 "
 SRC_URI[index.md5sum] = "79f10f436dbf26737cc80445746f16b4"
 SRC_URI[index.sha256sum] = "86114b93f1f51aaf0aec3af0751d214b351f4ff9839ba031315c1b19dcbb1913"
